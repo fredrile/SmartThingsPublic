@@ -10,10 +10,13 @@
  *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
  *  for the specific language governing permissions and limitations under the License.
  *
+ * V0.0.2 06.01.2022
  * V0.0.1 29/06/2018
  *
  *
  * Changelog:
+ *
+ * 0.0.2 - Removed all references to fan to reduce polling and attempt to remove GUI, updated devicejoinnames
  *
  * 0.0.1 - Initial version based on work by AdamV and Fibaro
  *         Using security encapsulation
@@ -31,7 +34,7 @@
 */
  
  preferences {
-     parameterMap().each { 
+     parameterMap().each {
          input (
              title: "${it.num}. ${it.title}",
              description: it.descr,
@@ -57,12 +60,12 @@
 
 
 metadata {
-	definition (name: "Z-Trm3 DH modified", namespace: "heatit", author: "fredrile") {
+	definition (name: "Heatit Z-Trm3 Nofan", namespace: "heatit", author: "magnusstam") {
 		capability "Actuator"
 		capability "Temperature Measurement"
 		capability "Thermostat"
         capability "Thermostat Mode"
-        capability "Thermostat Heating Setpoint"
+		capability "Thermostat Heating Setpoint"
 		capability "Thermostat Operating State"
         capability "Thermostat Setpoint"
 		capability "Configuration"
@@ -80,7 +83,9 @@ metadata {
         command "pressUp"
         command "pressDown"
 
-    fingerprint mfr: "019B", prod: "0003", model: "0203"
+    fingerprint mfr: "019B", prod: "0003", model: "0202", deviceJoinName: "Heatit Z-TRM2 Thermostat" //Heatit Z-TRM2 Thermostat
+	fingerprint mfr: "019B", prod: "0003", model: "0203", deviceJoinName: "Heatit Z-TRM3 Thermostat" //Heatit Z-TRM3 Thermostat
+	
 		//fingerprint deviceId: "0x0806"
 		//fingerprint inClusters: "0x5E, 0x43, 0x31, 0x86, 0x40, 0x59, 0x85, 0x73, 0x72, 0x5A, 0x70"
 	}
@@ -370,24 +375,6 @@ def zwaveEvent(physicalgraph.zwave.commands.thermostatmodev2.ThermostatModeRepor
 	map.name = "thermostatMode"
 	map
 }
-
-// def zwaveEvent(physicalgraph.zwave.commands.thermostatfanmodev3.ThermostatFanModeReport cmd) {
-	// def map = [:]
-	// switch (cmd.fanMode) {
-		// case physicalgraph.zwave.commands.thermostatfanmodev3.ThermostatFanModeReport.FAN_MODE_AUTO_LOW:
-			// map.value = "fanAuto"
-			// break
-		// case physicalgraph.zwave.commands.thermostatfanmodev3.ThermostatFanModeReport.FAN_MODE_LOW:
-			// map.value = "fanOn"
-			// break
-		// case physicalgraph.zwave.commands.thermostatfanmodev3.ThermostatFanModeReport.FAN_MODE_CIRCULATION:
-			// map.value = "fanCirculate"
-			// break
-	// }
-	// map.name = "thermostatFanMode"
-	// map.displayed = false
-	// map
-// }
 
 def zwaveEvent(physicalgraph.zwave.commands.thermostatmodev2.ThermostatModeSupportedReport cmd) {
 	log.debug("support reprt: $cmd")
